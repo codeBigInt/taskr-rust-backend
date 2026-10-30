@@ -30,11 +30,11 @@ pub async fn create(
 
 pub async fn delete(State(state): State<AppState>, Path(id): Path<u32>) -> StatusCode {
     let mut tasks = state.tasks.lock().unwrap();
-    let next_index = state.next_idx.lock().unwrap();
+    let before = tasks.len();
 
     tasks.retain(|task| task.id != id);
 
-    if tasks.len() < (*next_index - 1) as usize {
+    if tasks.len() < before {
         return StatusCode::NO_CONTENT;
     } else {
         StatusCode::NOT_FOUND
