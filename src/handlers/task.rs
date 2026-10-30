@@ -34,7 +34,7 @@ pub async fn delete(State(state): State<AppState>, Path(id): Path<u32>) -> Statu
 
     tasks.retain(|task| task.id != id);
 
-    if tasks.len() == (*next_index - 1) as usize {
+    if tasks.len() < (*next_index - 1) as usize {
         return StatusCode::NO_CONTENT;
     } else {
         StatusCode::NOT_FOUND
